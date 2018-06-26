@@ -35,7 +35,7 @@ const loginUser = (userData, history) => (dispatch) => {
       payload: err.response.data
     }));
 };
-const logoutUser = () => (dispatch) => {
+const logoutUser = history => (dispatch) => {
   localStorage.clear();
   setAuthToken();
 

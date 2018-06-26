@@ -1,15 +1,18 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Landing from '../components/layout/Landing';
 import Signup from '../components/auth/signup';
 import Signin from '../components/auth/signin';
 
+export const history = createBrowserHistory();
+
 const AppRouter = () => (
-  <Router>
+  <Router history={history}>
     <div className="App">
-      <Navbar />
+      <Navbar history={history} />
       <Route exact path="/" component={Landing} />
       <div className="container">
         <Route exact path="/signup" component={Signup} />

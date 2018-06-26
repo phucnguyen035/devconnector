@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import jwtDecode from 'jwt-decode';
-import AppRouter from './routes';
+import AppRouter, { history } from './routes';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authActions';
 import store from './store';
@@ -22,7 +22,7 @@ if (localStorage.jwtToken) {
     store.dispatch(logoutUser());
     // TODO: clear current profile
     // Redirect to login
-    window.location = '/';
+    history.push('/');
   }
 }
 

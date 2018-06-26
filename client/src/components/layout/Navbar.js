@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { logoutUser } from '../../actions/authActions';
 
-const Navbar = ({ user, logout }) => {
+const Navbar = ({ user, logout, history }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
-    window.location = '/';
+    history.push('/');
   };
 
   const { isAuthenticated, info } = user;
@@ -75,6 +75,7 @@ const Navbar = ({ user, logout }) => {
 };
 
 Navbar.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   logout: PropTypes.func.isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired
 };
