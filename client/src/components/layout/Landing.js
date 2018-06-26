@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class Landing extends Component {
-  state = {};
+  componentWillMount = () => {
+    const { history, user } = this.props;
+    const { isAuthenticated } = user;
+
+    if (isAuthenticated) {
+      history.push('/dashboard');
+    }
+  };
 
   render() {
     return (
@@ -33,4 +42,9 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+Landing.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  user: PropTypes.objectOf(PropTypes.any).isRequired
+};
+
+export default connect(state => ({ user: state.user }))(Landing);

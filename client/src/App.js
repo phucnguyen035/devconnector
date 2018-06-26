@@ -1,23 +1,35 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import Landing from './components/layout/Landing';
-import Signup from './components/auth/signup';
-import Signin from './components/auth/signin';
+import { Provider } from 'react-redux';
+import jwtDecode from 'jwt-decode';
+import AppRouter from './routes';
+import setAuthToken from './utils/setAuthToken';
+import { setCurrentUser, logoutUser } from './actions/authActions';
+import store from './store';
 
-const App = props => (
-  <Router>
-    <div className="App">
-      <Navbar />
-      <Route exact path="/" component={Landing} />
-      <div className="container">
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/signin" component={Signin} />
-      </div>
-      <Footer />
-    </div>
-  </Router>
+// Check for token for every visit
+if (localStorage.jwtToken) {
+  const { jwtToken: token } = localStorage;
+  // Set auth token
+  setAuthToken(token);
+  // Decode token to get user info and exp
+  const decoded = jwtDecode(token);
+
+  store.dispatch(setCurrentUser(decoded));
+
+  // check for expired token
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    store.dispatch(logoutUser());
+    // TODO: clear current profile
+    // Redirect to login
+    window.location = '/';
+  }
+}
+
+const App = () => (
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>
 );
 
 export default App;
