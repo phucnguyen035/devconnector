@@ -103,7 +103,10 @@ router.post('/signin', (req, res) => {
         });
       });
     })
-    .catch(err => res.status(404).json({ messsage: 'User not found' }));
+    .catch(err => {
+      errors.email = "User not found"
+      return res.status(404).json(errors)
+    });
 });
 
 // @route GET api/users/current
