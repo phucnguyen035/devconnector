@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import * as Actions from '../../utils/stateChanges';
 import { loginUser } from '../../actions/authActions';
 import InputField from '../commons/InputField';
@@ -13,16 +12,18 @@ class Signin extends PureComponent {
     errors: {}
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     const { user, history } = this.props;
     if (user.isAuthenticated) {
       history.push('/dashboard');
     }
   };
 
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.errors) {
-      this.setState(Actions.getErrors(nextProps.errors));
+  componentDidUpdate = (prevProps) => {
+    const { errors } = this.props;
+
+    if (errors !== prevProps.errors) {
+      this.setState(Actions.getErrors(errors));
     }
   };
 
@@ -33,10 +34,10 @@ class Signin extends PureComponent {
 
   handleSubmit = (e) => {
     const { errors, ...user } = this.state;
-    const { handleLogin, history } = this.props;
+    const { loginUser, history } = this.props;
 
     e.preventDefault();
-    handleLogin(user, history);
+    loginUser(user, history);
   };
 
   render() {
@@ -78,7 +79,7 @@ class Signin extends PureComponent {
 }
 
 Signin.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any)
@@ -93,5 +94,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { handleLogin: loginUser }
+  { loginUser }
 )(Signin);

@@ -24,9 +24,12 @@
         "allow": ["__REDUX_DEVTOOLS_EXTENSION__", "__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"]
       }
     ],
+    "no-shadow": "off",
     "function-paren-newline": ["error", "consistent"],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "import/no-named-as-default": "off",
+
+    "react/destructuring-assignment": ["warn", "always"],
     "react/no-direct-mutation-state": "error",
     "react/no-this-in-sfc": "error",
     "react/no-unused-state": "warn",

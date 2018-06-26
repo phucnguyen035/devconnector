@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
 import * as Actions from '../../utils/stateChanges';
 import { createUser } from '../../actions/authActions';
 import InputField from '../commons/InputField';
@@ -16,17 +15,18 @@ class Signup extends PureComponent {
     errors: {}
   };
 
-  componentWillMount = () => {
-    const { user } = this.props;
+  componentDidMount = () => {
+    const { user, history } = this.props;
     if (user.isAuthenticated) {
-      const { history } = this.props;
       history.push('/dashboard');
     }
   };
 
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.errors) {
-      this.setState(Actions.getErrors(nextProps.errors));
+  componentDidUpdate = (prevProps) => {
+    const { errors } = this.props;
+
+    if (errors !== prevProps.errors) {
+      this.setState(Actions.getErrors(errors));
     }
   };
 
@@ -37,10 +37,10 @@ class Signup extends PureComponent {
 
   handleSubmit = (e) => {
     const { errors, ...newUser } = this.state;
-    const { handleCreateUser, history } = this.props;
+    const { createUser, history } = this.props;
 
     e.preventDefault();
-    handleCreateUser(newUser, history);
+    createUser(newUser, history);
   };
 
   render() {
@@ -98,13 +98,18 @@ class Signup extends PureComponent {
 }
 
 Signup.propTypes = {
-  handleCreateUser: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
   errors: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
+const mapStateToProps = state => ({
+  errors: state.errors,
+  user: state.user
+});
+
 export default connect(
-  state => ({ errors: state.errors, user: state.user }),
-  { handleCreateUser: createUser }
+  mapStateToProps,
+  { createUser }
 )(withRouter(Signup));
