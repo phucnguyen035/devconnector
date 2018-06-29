@@ -137,7 +137,7 @@ router.post('/', isLoggedIn(), (req, res) => {
         { user: req.user.id },
         { $set: profileFields },
         { new: true }
-      );
+      ).exec();
 
       return res.json(updatedProfile);
     }
@@ -170,8 +170,8 @@ router.post('/', isLoggedIn(), (req, res) => {
 router.delete('/', isLoggedIn(), (req, res) => {
   const removeProfileAndUser = async () => {
     try {
-      await Profile.findOneAndRemove({ user: req.user.id });
-      await User.findByIdAndRemove({ _id: req.user.id });
+      await Profile.findOneAndRemove({ user: req.user.id }).exec();
+      await User.findByIdAndRemove({ _id: req.user.id }).exec();
 
       return res.json({ success: true });
     } catch (error) {
@@ -193,7 +193,7 @@ router.post('/experience', isLoggedIn(), (req, res) => {
 
   const createExperience = async () => {
     try {
-      const profile = await Profile.findOne({ user: req.user.id });
+      const profile = await Profile.findOne({ user: req.user.id }).exect();
 
       // Add to experience array
       profile.experience = [{ ...req.body }, ...profile.experience];
@@ -218,7 +218,7 @@ router.delete('/experience/:id', isLoggedIn(), (req, res) => {
   const deleteExperience = async () => {
     try {
       // Get profile and remove index
-      const profile = await Profile.findOne({ user: req.user.id });
+      const profile = await Profile.findOne({ user: req.user.id }).exec();
       const removeIndex = profile.experience.findIndex(item => item.id === req.params.id);
 
       // Splice out of array then save
@@ -244,7 +244,7 @@ router.post('/education', isLoggedIn(), (req, res) => {
 
   const createEducation = async () => {
     try {
-      const profile = await Profile.findOne({ user: req.user.id });
+      const profile = await Profile.findOne({ user: req.user.id }).exect();
 
       // Add to experience array
       profile.education = [{ ...req.body }, ...profile.education];
@@ -266,7 +266,7 @@ router.post('/education', isLoggedIn(), (req, res) => {
 router.delete('/education/:id', isLoggedIn(), (req, res) => {
   const deleteEducation = async () => {
     try {
-      const profile = await Profile.findOne({ user: req.user.id });
+      const profile = await Profile.findOne({ user: req.user.id }).exec();
       const removeIndex = profile.education.findIndex(item => item.id === req.params.id);
 
       profile.education.splice(removeIndex, 1);
