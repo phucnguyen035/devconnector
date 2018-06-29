@@ -113,7 +113,7 @@ router.post('/', isLoggedIn(), (req, res) => {
   if (!isEmpty(status)) profileFields.status = status;
   if (!isEmpty(company)) profileFields.company = company;
   if (!isEmpty(website)) profileFields.website = website;
-  if (!isEmpty(website)) profileFields.location = location;
+  if (!isEmpty(location)) profileFields.location = location;
   if (!isEmpty(bio)) profileFields.bio = bio;
   if (!isEmpty(githubUsername)) profileFields.githubUsername = githubUsername;
   // Skills - Split into array

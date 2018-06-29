@@ -5,22 +5,28 @@ import { Link } from 'react-router-dom';
 import { getCurrentProfile, deleteAccount } from '../../actions/profileActions';
 import Spinner from '../commons/Spinner';
 import DashboardActions from './DashboardActions';
+import Experience from './Experience';
+import Education from './Education';
 
 class Dashboard extends PureComponent {
   componentDidMount = () => {
-    this.props.getCurrentProfile();
+    const { getCurrentProfile } = this.props;
+
+    getCurrentProfile();
   };
 
   handleDeleteClick = () => {
-    this.props.deleteAccount();
+    const { deleteAccount } = this.props;
+
+    deleteAccount();
   };
 
   render() {
     // Destructuring to get profile and loading properties from this.props.profile
     const {
+      user,
       profile: { profile, loading }
     } = this.props;
-    const { user } = this.props;
 
     let dashboardContent;
 
@@ -34,8 +40,9 @@ class Dashboard extends PureComponent {
             Welcome <Link to={`/profile/${profile.handle}`}> {user.info.name}</Link>
           </p>
           <DashboardActions />
-          <div style={{ marginBottom: '60px' }} />
-          <button type="button" className="btn btn-danger" onClick={this.handleDeleteClick}>
+          <Experience experiences={profile.experience} />
+          <Education education={profile.education} />
+          <button type="button" className="btn btn-danger mt-5" onClick={this.handleDeleteClick}>
             Delete my account
           </button>
         </div>
