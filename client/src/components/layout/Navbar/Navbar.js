@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import NavAuthLinks from './NavAuthLinks';
 import NavGuestLinks from './NavGuestLinks';
 
-const Navbar = ({ user, history }) => {
+const Navbar = ({ user }) => {
   const { isAuthenticated } = user;
 
   return (
@@ -34,7 +34,7 @@ const Navbar = ({ user, history }) => {
           </ul>
 
           <ul className="navbar-nav ml-auto">
-            {isAuthenticated ? <NavAuthLinks history={history} /> : <NavGuestLinks />}
+            {isAuthenticated ? <NavAuthLinks /> : <NavGuestLinks />}
           </ul>
         </div>
       </div>
@@ -43,7 +43,6 @@ const Navbar = ({ user, history }) => {
 };
 
 Navbar.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired
 };
 

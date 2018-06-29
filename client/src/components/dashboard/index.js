@@ -2,21 +2,25 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getCurrentProfile } from '../../actions/profileActions';
+import { getCurrentProfile, deleteAccount } from '../../actions/profileActions';
 import Spinner from '../commons/Spinner';
+import DashboardActions from './DashboardActions';
 
 class Dashboard extends PureComponent {
   componentDidMount = () => {
     this.props.getCurrentProfile();
   };
 
+  handleDeleteClick = () => {
+    this.props.deleteAccount();
+  };
+
   render() {
-    // Destructuring to get info property from this.props.user
-    const { user } = this.props;
     // Destructuring to get profile and loading properties from this.props.profile
     const {
       profile: { profile, loading }
     } = this.props;
+    const { user } = this.props;
 
     let dashboardContent;
 
@@ -24,12 +28,22 @@ class Dashboard extends PureComponent {
       dashboardContent = <Spinner />;
     } else if (Object.keys(profile).length > 0) {
       // If user has profile => display profile
-      dashboardContent = <h3>Display profile</h3>;
+      dashboardContent = (
+        <div>
+          <p className="lead text-muted">
+            Welcome <Link to={`/profile/${profile.handle}`}> {user.info.name}</Link>
+          </p>
+          <DashboardActions />
+          <div style={{ marginBottom: '60px' }} />
+          <button type="button" className="btn btn-danger" onClick={this.handleDeleteClick}>
+            Delete my account
+          </button>
+        </div>
+      );
     } else {
       // Else create profile
       dashboardContent = (
         <div>
-          <p className="lead text-muted">Welcome {user.info.name}</p>
           <p> Please set up your profile.</p>
           <Link to="/create-profile" className="btn btn-lg btn-info">
             {' '}
@@ -56,6 +70,7 @@ class Dashboard extends PureComponent {
 
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
   profile: PropTypes.objectOf(PropTypes.any).isRequired
 };
@@ -64,8 +79,12 @@ const mapStateToProps = state => ({
   profile: state.profile,
   user: state.user
 });
+const mapDispatchToProps = {
+  getCurrentProfile,
+  deleteAccount
+};
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile }
+  mapDispatchToProps
 )(Dashboard);

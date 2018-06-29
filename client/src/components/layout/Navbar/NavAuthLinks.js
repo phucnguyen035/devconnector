@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 import { logoutUser } from '../../../actions/authActions';
 import { clearUserProfile } from '../../../actions/profileActions';
 
-const NavAuthLinks = ({ logoutUser, history, info, clearUserProfile }) => {
+const NavAuthLinks = ({ logoutUser, info, clearUserProfile, history }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     clearUserProfile();
@@ -13,17 +14,24 @@ const NavAuthLinks = ({ logoutUser, history, info, clearUserProfile }) => {
   };
 
   return (
-    <li className="nav-item">
-      <a href="/" className="nav-link" onClick={handleLogout}>
-        <img
-          className="rounded-circle"
-          src={info.avatar}
-          alt={info.name}
-          style={{ width: '25px', height: '25px' }}
-        />{' '}
-        Sign out
-      </a>
-    </li>
+    <Fragment>
+      <li className="nav-item">
+        <Link to="/dashboard" className="nav-link">
+          Dashboard
+        </Link>
+      </li>
+      <li className="nav-item">
+        <a href="/" className="nav-link" onClick={handleLogout}>
+          <img
+            className="rounded-circle"
+            src={info.avatar}
+            alt={info.name}
+            style={{ width: '25px', height: '25px' }}
+          />{' '}
+          Sign out
+        </a>
+      </li>
+    </Fragment>
   );
 };
 
@@ -39,4 +47,4 @@ const mapDispatchToProps = { logoutUser, clearUserProfile };
 export default connect(
   state => ({ info: state.user.info }),
   mapDispatchToProps
-)(NavAuthLinks);
+)(withRouter(NavAuthLinks));

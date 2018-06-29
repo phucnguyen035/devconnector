@@ -2,39 +2,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const InputField = (props) => {
-  const { name, placeholder, value, error, info, type, onChange, disabled } = props;
+const SelectList = (props) => {
+  const { name, value, error, info, onChange, options } = props;
+  const selectOptions = options.map(option => (
+    <option key={option.label} value={option.value} disabled={option.disabled}>
+      {option.label}
+    </option>
+  ));
 
   return (
     <div className="form-group">
-      <input
-        type={type}
+      <select
         className={classnames('form-control form-control-lg', {
           'is-invalid': error
         })}
-        placeholder={placeholder}
         name={name}
         value={value}
         onChange={onChange}
-        disabled={disabled}
-      />
+      >
+        {selectOptions}
+      </select>
       {info && <small className="form-text text-muted">{info}</small>}
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );
 };
 
-InputField.propTypes = {
+SelectList.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
   info: PropTypes.string,
-  error: PropTypes.string,
-  disabled: PropTypes.bool
+  error: PropTypes.string
 };
 
-InputField.defaultProps = undefined;
+SelectList.defaultProps = undefined;
 
-export default InputField;
+export default SelectList;

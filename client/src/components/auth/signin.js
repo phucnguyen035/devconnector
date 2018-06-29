@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as Actions from '../../utils/stateChanges';
+import { changeInput, getErrors } from '../../utils/stateChanges';
 import { loginUser } from '../../actions/authActions';
 import InputField from '../commons/InputField';
 
@@ -23,13 +23,13 @@ class Signin extends PureComponent {
     const { errors } = this.props;
 
     if (errors !== prevProps.errors) {
-      this.setState(Actions.getErrors(errors));
+      this.setState(getErrors(errors));
     }
   };
 
   handleInputChange = (e) => {
     e.persist();
-    this.setState(Actions.changeInput(e));
+    this.setState(changeInput(e));
   };
 
   handleSubmit = (e) => {
