@@ -193,7 +193,7 @@ router.post('/experience', isLoggedIn(), (req, res) => {
 
   const createExperience = async () => {
     try {
-      const profile = await Profile.findOne({ user: req.user.id }).exect();
+      const profile = await Profile.findOne({ user: req.user.id }).exec();
 
       // Add to experience array
       profile.experience = [{ ...req.body }, ...profile.experience];
@@ -244,7 +244,7 @@ router.post('/education', isLoggedIn(), (req, res) => {
 
   const createEducation = async () => {
     try {
-      const profile = await Profile.findOne({ user: req.user.id }).exect();
+      const profile = await Profile.findOne({ user: req.user.id }).exec();
 
       // Add to experience array
       profile.education = [{ ...req.body }, ...profile.education];
