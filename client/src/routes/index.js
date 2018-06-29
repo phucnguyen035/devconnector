@@ -7,11 +7,12 @@ import Footer from '../components/layout/Footer';
 import Landing from '../components/layout/Landing';
 import Signup from '../components/auth/signup';
 import Signin from '../components/auth/signin';
-import Dashboard from '../components/dashboard';
-import CreateProfile from '../components/profile/CreateProfile';
-import EditProfile from '../components/profile/EditProfile';
+import Dashboard from '../components/dashboard/Dashboard';
+import CreateProfile from '../components/dashboard/CreateProfile';
+import EditProfile from '../components/dashboard/EditProfile';
 import AddExperience from '../components/credentials/AddExperience';
 import AddEducation from '../components/credentials/AddEducation';
+import Profiles from '../components/profiles/Profiles';
 
 export const history = createBrowserHistory();
 
@@ -23,6 +24,7 @@ const AppRouter = () => (
       <div className="container">
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/signin" component={Signin} />
+        <Route exact path="/profiles" component={Profiles} />
         <Switch>
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
           <PrivateRoute exact path="/create-profile" component={CreateProfile} />

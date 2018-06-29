@@ -18,6 +18,11 @@ export default (state = initialState, action) => {
         loading: false
       };
     case 'GET_PROFILES':
+      return {
+        ...state,
+        profiles: action.payload,
+        loading: false
+      };
     case 'PROFILE_NOT_FOUND':
     case 'CLEAR_CURRENT_PROFILE':
       return {

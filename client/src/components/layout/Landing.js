@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Landing = (props) => {
-  const { history, user } = props;
-  const { isAuthenticated } = user;
-
+const Landing = ({ history, user: { isAuthenticated } }) => {
   if (isAuthenticated) {
     history.push('/dashboard');
   }

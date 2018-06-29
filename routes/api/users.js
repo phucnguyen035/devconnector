@@ -42,6 +42,7 @@ router.post('/signup', (req, res) => {
   if (!isValid) return res.status(400).json(errors);
 
   // Destructure from req.body
+  const { name, email, password } = req.body;
 
   const signUp = async () => {
     // Get avatar from gravatar
@@ -50,7 +51,6 @@ router.post('/signup', (req, res) => {
       r: 'pg', // rating
       d: 'mm', // default
     });
-    const { name, email, password } = req.body;
     const user = await User.findOne({ email }).exec();
 
     // Block if email exists

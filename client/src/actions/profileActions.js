@@ -35,8 +35,8 @@ export const createProfile = (profileData, history) => async (dispatch) => {
   }
 };
 
-// Delete account AND profile
 export const deleteAccount = () => async (dispatch) => {
+  // Delete account AND profile
   if (window.confirm('Are you sure? This can NOT be undone')) {
     try {
       await axios.delete('/api/profile');
@@ -108,5 +108,23 @@ export const deleteEducation = eduID => async (dispatch) => {
     });
   } catch (error) {
     throw error;
+  }
+};
+
+export const getProfiles = () => async (dispatch) => {
+  dispatch(setProfileLoading());
+
+  try {
+    const results = await axios.get('/api/profile/all');
+
+    dispatch({
+      type: 'GET_PROFILES',
+      payload: results.data
+    });
+  } catch (error) {
+    dispatch({
+      type: 'GET_PROFILES',
+      payload: null
+    });
   }
 };

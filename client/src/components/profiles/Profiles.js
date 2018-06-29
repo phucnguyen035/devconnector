@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../commons/Spinner';
 import { getProfiles } from '../../actions/profileActions';
+import ProfileItem from './ProfileItem';
 
 class Profiles extends PureComponent {
   componentDidMount = () => {
@@ -12,13 +13,15 @@ class Profiles extends PureComponent {
   };
 
   render() {
-    const { profiles, loading } = this.props.profile;
+    const {
+      profile: { profiles, loading }
+    } = this.props;
     let profileItems;
 
     if (profiles === null || loading) {
       profileItems = <Spinner />;
     } else if (profiles.length > 0) {
-      profileItems = <h1>Profiles</h1>;
+      profileItems = profiles.map(profile => <ProfileItem key={profile._id} profile={profile} />);
     } else {
       profileItems = <h4>No profile found</h4>;
     }
@@ -38,11 +41,19 @@ class Profiles extends PureComponent {
 }
 
 Profiles.propTypes = {
-  getProfiles: PropTypes.func.isRequired
+  getProfiles: PropTypes.func.isRequired,
+  profile: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
 const mapStatetToProps = state => ({
   profile: state.profile
 });
 
-export default connect(mapStatetToProps)(Profiles);
+const mapDispatchToProps = {
+  getProfiles
+};
+
+export default connect(
+  mapStatetToProps,
+  mapDispatchToProps
+)(Profiles);
