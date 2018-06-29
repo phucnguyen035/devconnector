@@ -20,14 +20,17 @@ const router = express.Router();
 // @desc Return all user
 // @access Public
 router.get('/all', (req, res) => {
-  User.find().then(users => {
-    // Block if no users found
+  const findAll = async () => {
+    const users = await User.find().exec();
+
     if (_isEmpty(users)) {
       return res.json({ noUser: 'No users found' });
     }
 
-    res.json(users);
-  });
+    return res.json(users);
+  };
+
+  findAll();
 });
 
 // @route GET api/users/signup
@@ -39,9 +42,17 @@ router.post('/signup', (req, res) => {
   if (!isValid) return res.status(400).json(errors);
 
   // Destructure from req.body
-  const { name, email, password } = req.body;
 
-  User.findOne({ email }).then(user => {
+  const signUp = async () => {
+    // Get avatar from gravatar
+    const avatar = gravatar.url(email, {
+      s: '200', // size
+      r: 'pg', // rating
+      d: 'mm', // default
+    });
+    const { name, email, password } = req.body;
+    const user = await User.findOne({ email }).exec();
+
     // Block if email exists
     if (user) {
       errors.email = 'Email already exists';
@@ -49,24 +60,20 @@ router.post('/signup', (req, res) => {
     }
 
     // CREATE USER
-    // Get avatar from gravatar
-    const avatar = gravatar.url(email, {
-      s: '200', // size
-      r: 'pg', // rating
-      d: 'mm', // default
-    });
-    // Create
-    const newUser = new User({ name, email, avatar, password });
+    const createUser = new User({ name, email, avatar, password });
 
-    // Hash password
-    bcrypt.genSalt().then(salt => {
-      bcrypt.hash(newUser.password, salt).then(hash => {
-        // Set new hased password as user password
-        newUser.password = hash;
-        newUser.save().then(user => res.json(user));
-      });
-    });
-  });
+    // Hash password then set the new hased password as user password
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(createUser.password, salt);
+
+    createUser.password = hashedPassword;
+
+    const newUser = await createUser.save();
+
+    res.json(newUser);
+  };
+
+  signUp();
 });
 
 // @route GET api/users/signin
@@ -74,39 +81,38 @@ router.post('/signup', (req, res) => {
 // @access Public
 router.post('/signin', (req, res) => {
   const { errors, isValid } = validateSigninInput(req.body);
-  const { email, password } = req.body;
 
   if (!isValid) return res.status(400).json(errors);
 
-  // Find user by email
-  User.findOne({ email })
-    .then(user => {
-      // Check password
-      bcrypt.compare(password, user.password).then(isMatch => {
-        // Block if passwords do not match
-        if (!isMatch) {
-          errors.password = 'Incorrect password';
-          return res.status(400).json(errors);
-        }
+  const signIn = async () => {
+    try {
+      const user = await User.findOne({ email: req.body.email }).exec();
+      const passwordMatch = bcrypt.compare(req.body.password, user.password);
 
-        const { id, name, email, avatar } = user;
-        const payload = { id, name, email, avatar };
+      // Block if incorrect password
+      if (!passwordMatch) {
+        errors.password = 'Incorrect password';
+        return res.status(400).json(errors);
+      }
 
-        // Sign token
-        jwt.sign(payload, secretOrKey, { expiresIn: '1w' }, (error, token) => {
-          if (error) return console.error(error);
+      // Destructure user then create payload
+      const { id, name, email, avatar } = user;
+      const payload = { id, name, email, avatar };
 
-          res.json({
-            success: true,
-            token: `Bearer  ${token}`,
-          });
-        });
+      // Sign token
+      const token = jwt.sign(payload, secretOrKey, { expiresIn: '1w' });
+
+      res.json({
+        succeess: true,
+        token: `Bearer ${token}`,
       });
-    })
-    .catch(err => {
-      errors.email = "User not found"
-      return res.status(404).json(errors)
-    });
+    } catch (error) {
+      errors.email = 'User not found';
+      return res.status(404).json(errors);
+    }
+  };
+
+  signIn();
 });
 
 // @route GET api/users/current

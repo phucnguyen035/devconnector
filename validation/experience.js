@@ -24,13 +24,6 @@ module.exports = validateExperienceInput = data => {
   // From validation
   if (Validator.isEmpty(from)) {
     errors.from = 'From field is required';
-  } else if (!Validator.isInt(from)) {
-    errors.from = 'From must be a number';
-  }
-
-  // To validation
-  if (!Validator.isEmpty(to) && !Validator.isInt(to)) {
-    errors.to = 'To field must be a number';
   }
 
   return { errors, isValid: _isEmpty(errors) };
