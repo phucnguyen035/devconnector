@@ -106,27 +106,29 @@ router.post('/', isLoggedIn(), (req, res) => {
   if (!isValid) return res.status(400).json(errors);
 
   // Get fields
-  const profileFields = {};
+  const profileFields = {
+    user: req.user.id,
+    handle,
+    status,
+    company: company ? company : '',
+    website: website ? website : '',
+    location: location ? location : '',
+    bio: bio ? bio : '',
+    githubUsername: githubUsername ? githubUsername : ''
+  };
 
-  profileFields.user = req.user.id;
-  if (handle) profileFields.handle = handle;
-  if (!isEmpty(status)) profileFields.status = status;
-  if (!isEmpty(company)) profileFields.company = company;
-  if (!isEmpty(website)) profileFields.website = website;
-  if (!isEmpty(location)) profileFields.location = location;
-  if (!isEmpty(bio)) profileFields.bio = bio;
-  if (!isEmpty(githubUsername)) profileFields.githubUsername = githubUsername;
   // Skills - Split into array
   if (typeof skills !== 'undefined') {
     profileFields.skills = skills.split(',');
   }
   // Social
-  profileFields.social = {};
-  if (!isEmpty(youtube)) profileFields.social.youtube = youtube;
-  if (!isEmpty(twitter)) profileFields.social.twitter = twitter;
-  if (!isEmpty(facebook)) profileFields.social.facebook = facebook;
-  if (!isEmpty(linkedin)) profileFields.social.linkedin = linkedin;
-  if (!isEmpty(instagram)) profileFields.social.instagram = instagram;
+  profileFields.social = {
+    youtube: youtube ? youtube : '',
+    twitter: twitter ? twitter : '',
+    facebook: facebook ? facebook : '',
+    linkedin: linkedin ? linkedin : '',
+    instagram: instagram ? instagram : ''
+  };
 
   const createProfile = async () => {
     const profile = await Profile.findOne({ user: req.user.id }).exec();

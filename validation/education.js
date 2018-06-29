@@ -3,7 +3,7 @@ const _isEmpty = require('lodash.isempty');
 
 module.exports = validateEducationInput = data => {
   const errors = {};
-  let { school, degree, field, from, to } = data;
+  let { school, degree, field, from, to, current } = data;
 
   // Set empty string if empty value in order to validate
   school = _isEmpty(school) ? '' : school;
@@ -30,6 +30,13 @@ module.exports = validateEducationInput = data => {
   // From validation
   if (Validator.isEmpty(from)) {
     errors.from = 'From field is required';
+  }
+
+  // Current validation
+  if (Validator.isEmpty(to) && !current) {
+    errors.to = 'Please select an end date for a past experience';
+  } else if (!Validator.isEmpty(to) && current) {
+    errors.to = 'Current job cannot have an end date'
   }
 
   return { errors, isValid: _isEmpty(errors) };
