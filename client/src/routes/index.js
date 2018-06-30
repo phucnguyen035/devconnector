@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createBrowserHistory';
 import PrivateRoute from './PrivateRoute';
 import Navbar from '../components/layout/Navbar/Navbar';
 import Footer from '../components/layout/Footer';
@@ -13,8 +13,10 @@ import EditProfile from '../components/dashboard/EditProfile';
 import AddExperience from '../components/credentials/AddExperience';
 import AddEducation from '../components/credentials/AddEducation';
 import Profiles from '../components/profiles/Profiles';
+import Profile from '../components/profile/Profile';
+import NotFound from '../components/not-found/NotFound';
 
-export const history = createBrowserHistory();
+export const history = createHistory();
 
 const AppRouter = () => (
   <Router history={history}>
@@ -22,15 +24,17 @@ const AppRouter = () => (
       <Navbar />
       <Route exact path="/" component={Landing} />
       <div className="container">
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/signin" component={Signin} />
-        <Route exact path="/profiles" component={Profiles} />
         <Switch>
-          <PrivateRoute exact path="/dashboard" component={Dashboard} />
-          <PrivateRoute exact path="/create-profile" component={CreateProfile} />
-          <PrivateRoute exact path="/edit-profile" component={EditProfile} />
-          <PrivateRoute exact path="/add-experience" component={AddExperience} />
-          <PrivateRoute exact path="/add-education" component={AddEducation} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/signin" component={Signin} />
+          <Route path="/profiles" component={Profiles} />
+          <Route path="/profile/:handle" component={Profile} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/create-profile" component={CreateProfile} />
+          <PrivateRoute path="/edit-profile" component={EditProfile} />
+          <PrivateRoute path="/add-experience" component={AddExperience} />
+          <PrivateRoute path="/add-education" component={AddEducation} />
+          <Route component={NotFound} />
         </Switch>
       </div>
       <Footer />

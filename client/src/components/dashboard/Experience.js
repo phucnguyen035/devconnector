@@ -7,8 +7,8 @@ const Experience = ({ experiences }) => (
     <h4>Experience Credentials</h4>
     <div className="table-responsive">
       <table className="table">
-        <thead className="table-active">
-          <tr>
+        <thead>
+          <tr className="table-active">
             <th>Company</th>
             <th>Title</th>
             <th>Years</th>

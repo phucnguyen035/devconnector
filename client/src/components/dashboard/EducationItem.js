@@ -7,7 +7,7 @@ import { deleteEducation } from '../../actions/profileActions';
 const EducationItem = (props) => {
   const {
     deleteEducation,
-    education: { school, degree, field, from, to, _id }
+    education: { school, degree, from, to, _id }
   } = props;
 
   const handleDeleteEducation = () => {

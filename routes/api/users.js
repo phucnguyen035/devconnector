@@ -103,7 +103,7 @@ router.post('/signin', (req, res) => {
       const token = jwt.sign(payload, secretOrKey, { expiresIn: '1w' });
 
       res.json({
-        succeess: true,
+        success: true,
         token: `Bearer ${token}`,
       });
     } catch (error) {

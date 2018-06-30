@@ -22,8 +22,9 @@ const createUser = (userData, history) => async (dispatch) => {
 
 const loginUser = (userData, history) => async (dispatch) => {
   try {
-    const { data } = await axios.post('/api/users/signin', userData);
-    const { token } = data;
+    const {
+      data: { token }
+    } = await axios.post('/api/users/signin', userData);
     const decoded = jwtDecode(token);
 
     // Save token to local storage and set authorizaion
