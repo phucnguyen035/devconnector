@@ -87,7 +87,7 @@ router.post('/signin', (req, res) => {
   const signIn = async () => {
     try {
       const user = await User.findOne({ email: req.body.email }).exec();
-      const passwordMatch = bcrypt.compare(req.body.password, user.password);
+      const passwordMatch = await bcrypt.compare(req.body.password, user.password);
 
       // Block if incorrect password
       if (!passwordMatch) {
