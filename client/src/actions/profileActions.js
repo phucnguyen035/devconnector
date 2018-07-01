@@ -142,7 +142,7 @@ export const getProfiles = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: 'GET_PROFILES',
-      payload: null
+      payload: []
     });
   }
 };
