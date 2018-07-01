@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../commons/Spinner';
 import { getProfiles } from '../../actions/profileActions';
 import ProfileItem from './ProfileItem';
 
-class Profiles extends Component {
+class Profiles extends PureComponent {
   componentDidMount = () => {
     const { getProfiles } = this.props;
 
