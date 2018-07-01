@@ -38,7 +38,6 @@ class CreateProfile extends PureComponent {
   };
 
   handleInputChange = (e) => {
-    e.persist();
     this.setState(changeInput(e));
   };
 

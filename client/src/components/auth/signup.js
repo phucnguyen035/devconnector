@@ -31,7 +31,6 @@ class Signup extends PureComponent {
   };
 
   handleInputChange = (e) => {
-    e.persist();
     this.setState(Actions.changeInput(e));
   };
 

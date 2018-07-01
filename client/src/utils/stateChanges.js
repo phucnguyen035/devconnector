@@ -1,12 +1,14 @@
-const changeInput = e => () => ({ [e.target.name]: e.target.value });
+export const changeInput = (e) => {
+  const { name, value } = e.target;
 
-const getErrors = errors => () => ({ errors });
+  return () => ({ [name]: value });
+};
 
-const toggleDisplaySocial = state => ({ displaySocial: !state.displaySocial });
+export const getErrors = errors => () => ({ errors });
 
-const toggleCheck = state => ({
+export const toggleDisplaySocial = state => ({ displaySocial: !state.displaySocial });
+
+export const toggleCheck = state => ({
   disabled: !state.disabled,
   current: !state.current
 });
-
-export { changeInput, getErrors, toggleDisplaySocial, toggleCheck };

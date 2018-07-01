@@ -34,7 +34,6 @@ class AddEducation extends PureComponent {
   };
 
   handleInputChange = (e) => {
-    e.persist();
     this.setState(changeInput(e));
   };
 

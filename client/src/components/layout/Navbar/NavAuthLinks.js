@@ -16,10 +16,16 @@ const NavAuthLinks = ({ logoutUser, info, clearUserProfile, history }) => {
   return (
     <Fragment>
       <li className="nav-item">
+        <Link to="/feed" className="nav-link">
+          Post Feed
+        </Link>
+      </li>
+      <li className="nav-item">
         <Link to="/dashboard" className="nav-link">
           Dashboard
         </Link>
       </li>
+
       <li className="nav-item">
         <a href="/" className="nav-link" onClick={handleLogout}>
           <img

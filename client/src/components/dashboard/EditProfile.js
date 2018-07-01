@@ -59,7 +59,6 @@ class EditProfile extends PureComponent {
   };
 
   handleInputChange = (e) => {
-    e.persist();
     this.setState(changeInput(e));
   };
 

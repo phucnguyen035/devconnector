@@ -15,6 +15,8 @@ import AddEducation from '../components/credentials/AddEducation';
 import Profiles from '../components/profiles/Profiles';
 import Profile from '../components/profile/Profile';
 import NotFound from '../components/not-found/NotFound';
+import Posts from '../components/posts/Posts';
+import Post from '../components/post/Post';
 
 export const history = createHistory();
 
@@ -34,6 +36,8 @@ const AppRouter = () => (
           <PrivateRoute path="/edit-profile" component={EditProfile} />
           <PrivateRoute path="/add-experience" component={AddExperience} />
           <PrivateRoute path="/add-education" component={AddEducation} />
+          <PrivateRoute path="/feed" component={Posts} />
+          <PrivateRoute path="/post/:id" component={Post} />
           <Route component={NotFound} />
         </Switch>
       </div>
