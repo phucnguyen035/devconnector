@@ -15,7 +15,6 @@ const router = express.Router();
 router.get('/', (req, res) => {
   Post.find()
     .sort({ date: -1 })
-    .populate('user', ['name', 'avatar'])
     .then(posts => {
       if (_isEmpty(posts)) {
         return res.status(404).json({ message: 'There are no posts' });
