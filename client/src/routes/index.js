@@ -38,7 +38,7 @@ const AppRouter = () => (
           <PrivateRoute path="/add-education" component={AddEducation} />
           <PrivateRoute path="/feed" component={Posts} />
           <PrivateRoute path="/post/:id" component={Post} />
-          <Route component={NotFound} />
+          <Route exact path="/not-found" component={NotFound} />
         </Switch>
       </div>
       <Footer />

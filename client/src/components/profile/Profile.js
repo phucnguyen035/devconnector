@@ -27,7 +27,7 @@ class Profile extends PureComponent {
       history
     } = this.props;
     if (profile === null && loading) {
-      history.push('/notfound');
+      history.push('/not-found');
     }
   };
 
