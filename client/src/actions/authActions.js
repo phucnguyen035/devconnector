@@ -7,18 +7,30 @@ const setCurrentUser = decodedToken => ({
   payload: decodedToken
 });
 
-const createUser = (userData, history) => async (dispatch) => {
-  try {
-    await axios.post('/api/users/signup', userData);
+// const createUser = (userData, history) => async (dispatch) => {
+//   try {
+//     await axios.post('/api/users/signup', userData);
 
-    history.push('/signin');
-  } catch (error) {
-    dispatch({
-      type: 'GET_ERRORS',
-      payload: error.response.data
-    });
-  }
-};
+//     const {
+//       data: { token }
+//     } = await axios.post('/api/users/signin', userData);
+
+//     const decoded = jwtDecode(token);
+
+//     // Save token to local storage and set authorizaion
+//     localStorage.setItem('jwtToken', token);
+//     setAuthToken(token);
+
+//     // Set current user
+//     dispatch(setCurrentUser(decoded));
+//     history.push('/dashboard');
+//   } catch (error) {
+//     dispatch({
+//       type: 'GET_ERRORS',
+//       payload: error.response.data
+//     });
+//   }
+// };
 
 const loginUser = (userData, history) => async (dispatch) => {
   try {
@@ -34,6 +46,19 @@ const loginUser = (userData, history) => async (dispatch) => {
     // Set current user
     dispatch(setCurrentUser(decoded));
     history.push('/dashboard');
+  } catch (error) {
+    dispatch({
+      type: 'GET_ERRORS',
+      payload: error.response.data
+    });
+  }
+};
+
+const createUser = (userData, history) => async (dispatch) => {
+  try {
+    await axios.post('/api/users/signup', userData);
+
+    dispatch(loginUser(userData, history));
   } catch (error) {
     dispatch({
       type: 'GET_ERRORS',

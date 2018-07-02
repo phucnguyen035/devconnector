@@ -56,7 +56,7 @@ router.post('/signup', (req, res) => {
     // Block if email exists
     if (user) {
       errors.email = 'Email already exists';
-      return res.status(400).json(errors.email);
+      return res.status(400).json(errors);
     }
 
     // CREATE USER
