@@ -15,8 +15,6 @@ PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.user.isAuthenticated
-});
+const mapStateToProps = ({ user: { isAuthenticated } }) => ({ isAuthenticated });
 
 export default connect(mapStateToProps)(PrivateRoute);
